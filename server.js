@@ -11,15 +11,13 @@ app.get("/", (req, res) => {
 app.post("/render-video", (req, res) => {
   const { images, audio } = req.body;
 
-  const cmd = 
-  ffmpeg -y \
-  -loop 1 -t 3 -i ${images[0]} \
-  -loop 1 -t 3 -i ${images[1]} \
-  -i ${audio} \
-  -filter_complex "[0:v][1:v]concat=n=2:v=1:a=0[outv]" \
-  -map "[outv]" -map 2:a \
-  -shortest output.mp4
-  ;
+  const cmd = `ffmpeg -y \
+-loop 1 -t 3 -i ${images[0]} \
+-loop 1 -t 3 -i ${images[1]} \
+-i ${audio} \
+-filter_complex \"[0:v][1:v]concat=n=2:v=1:a=0[outv]\" \
+-map \"[outv]\" -map 2:a \
+-shortest output.mp4`;
 
   exec(cmd, (err) => {
     if (err) {
